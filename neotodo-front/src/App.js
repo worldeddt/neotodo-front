@@ -57,8 +57,9 @@ function App() {
 
     const onCreate = () => {
 
+        console.log(nextId);
         const user = {
-            id: nextId,
+            id: nextId.current,
             username,
             email
         }
@@ -71,6 +72,11 @@ function App() {
         });
 
         nextId.current += 1;
+    }
+
+    const onRemove = (id) => {
+        console.log(id);
+        setUsers(users.filter(user => user.id !== id));
     }
 
 
@@ -90,7 +96,7 @@ function App() {
               onCreate={onCreate}
               onkeyup = {enter}
           />
-          <DynamicArrayVersion2 users = {users}/>
+          <DynamicArrayVersion2 users = {users} onRemove = {onRemove}/>
       </Wrapper>
   );
 }
