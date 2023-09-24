@@ -8,8 +8,8 @@ function DynamicVersion2({user, onRemove, onToggle}) {
     useEffect(() => {
         return () => {
             if (user.active) {
-                console.log(user);
-                console.log('dddd');
+                // console.log(user);
+                // console.log('dddd');
             }
         };
     }, [user]);

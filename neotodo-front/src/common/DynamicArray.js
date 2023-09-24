@@ -5,8 +5,6 @@ import React from "react";
 function Dynamic({user}) {
     const style = {display: "flex"};
 
-    console.log(user);
-
     return <div style={style}>
         <div >이름 : {user.username}</div> <div>email : {user.email}</div>
     </div>

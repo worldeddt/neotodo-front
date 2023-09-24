@@ -6,8 +6,17 @@ import Input from "./common/Input";
 import UseRef from "./common/UseRef";
 import DynamicArray from "./common/DynamicArray";
 import DynamicArrayVersion2 from "./common/DynamicArrayVersion2";
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useMemo, useRef, useState} from "react";
 import CreateUser from "./common/CreateUser";
+
+function countActiveUsers(users) {
+    console.log("사람 수 카운트 호출");
+    return users.filter(user => user.active).length;
+}
+
+function confirmNullOfEmailUser(users) {
+    return users.filter(user => user.email === null || user.email === "" || user.email === undefined).length;
+}
 
 function App() {
     const [inputs, setInputs] = useState({
@@ -88,7 +97,9 @@ function App() {
         );
     };
 
-
+    // const count = countActiveUsers(users);
+    const count = useMemo(() => countActiveUsers(users), [users]);
+    const nullEmailUser = confirmNullOfEmailUser(users);
   return (
       <Wrapper>
           {/*<Hitting/>*/}
@@ -106,6 +117,8 @@ function App() {
               onkeyup = {enter}
           />
           <DynamicArrayVersion2 users = {users} onRemove = {onRemove} onToggle = {onToggle}/>
+          <div>활성사용자 수 : {count}</div>
+          <div>이메일 안적은 사람 수 : {nullEmailUser}</div>
       </Wrapper>
   );
 }
