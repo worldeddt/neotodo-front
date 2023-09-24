@@ -4,6 +4,7 @@ import Wrapper from "./common/Wrapper";
 import Hitting from "./common/Hitting";
 import Input from "./common/Input";
 import UseRef from "./common/UseRef";
+import DynamicArray from "./common/DynamicArray";
 
 function App() {
   return (
@@ -13,6 +14,8 @@ function App() {
           <Todo isAdmin="N"/>
           <Input/>
           <UseRef/>
+
+          <DynamicArray/>
       </Wrapper>
   );
 }
