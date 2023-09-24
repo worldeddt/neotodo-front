@@ -1,9 +1,18 @@
-import React from "react";
+import React, {useEffect} from "react";
 
 
 
 function DynamicVersion2({user, onRemove, onToggle}) {
     const style = {display: "flex"};
+
+    useEffect(() => {
+        return () => {
+            if (user.active) {
+                console.log(user);
+                console.log('dddd');
+            }
+        };
+    }, [user]);
 
     return <div style={style}>
         <b
@@ -17,6 +26,7 @@ function DynamicVersion2({user, onRemove, onToggle}) {
         </b>
         <div >이름 : {user.username}</div> <div>(email : {user.email})</div>
         <button onClick={() => onRemove(user.id)}>삭제</button>
+        <button onClick={() => console.log(user)}>현재 상태</button>
     </div>
 }
 

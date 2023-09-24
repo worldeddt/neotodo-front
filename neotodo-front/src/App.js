@@ -59,8 +59,6 @@ function App() {
     const nextId = useRef(4);
 
     const onCreate = () => {
-
-        console.log(nextId);
         const user = {
             id: nextId.current,
             username,
@@ -79,7 +77,6 @@ function App() {
     }
 
     const onRemove = (id) => {
-        console.log(id);
         setUsers(users.filter(user => user.id !== id));
     }
 
