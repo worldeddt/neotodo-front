@@ -6,7 +6,7 @@ import Input from "./common/Input";
 import UseRef from "./common/UseRef";
 import DynamicArray from "./common/DynamicArray";
 import DynamicArrayVersion2 from "./common/DynamicArrayVersion2";
-import {useEffect, useMemo, useRef, useState} from "react";
+import {useEffect, useMemo, useRef, useState, useCallback} from "react";
 import CreateUser from "./common/CreateUser";
 import CreateReservation from "./common/CreateReservation";
 import DynamicArrayReservation from "./common/DynamicArrayReservation";
@@ -90,13 +90,14 @@ function App() {
 
     }, [users]);
 
-    const onChange = e => {
+    const onChange = useCallback(e => {
         const { name, value } = e.target;
         setInputs({
             ...inputs,
             [name]: value
         });
-    };
+    });
+
     const onReservationChange = e => {
         const {name, value} = e.target;
         setReservationInputs({
@@ -114,7 +115,6 @@ function App() {
             startDate,
             endDate
         });
-        console.log(reservationInputs);
     };
 
     const nextId = useRef(4);
@@ -139,7 +139,7 @@ function App() {
         reservationId.current += 1;
     }
 
-    const onCreate = () => {
+    const onCreate = useCallback(() => {
         const user = {
             id: nextId.current,
             username,
@@ -155,23 +155,23 @@ function App() {
         });
 
         nextId.current += 1;
-    }
+    }, [users, username, email]);
 
-    const onRemove = (id) => {
+    const onRemove = useCallback(id => {
         setUsers(users.filter(user => user.id !== id));
-    }
+    }, [users]);
 
     const onRemoveReservation = (reservationNumber) => {
         setReservations(reservations.filter(reservation => reservation.reservationNumber !== reservationNumber));
     }
 
-    const onToggle = id => {
+    const onToggle = useCallback(id => {
         setUsers(
             users.map(user =>
                 user.id === id ? { ...user, active: !user.active } : user
             )
         );
-    };
+    }, [users]);
 
     // const count = countActiveUsers(users);
     const count = useMemo(() => countActiveUsers(users), [users]);
@@ -179,15 +179,15 @@ function App() {
 
   return (
       <Wrapper>
-          <CreateReservation
-              person={person}
-              startDate={startDate}
-              endDate={endDate}
-              onCreate={createReserv}
-              onChange={onReservationChange}
-              onReservationChange = {onReservationDateChange}
-          />
-          <DynamicArrayReservation reservations={reservations} onRemove={onRemoveReservation}/>
+          {/*<CreateReservation*/}
+          {/*    person={person}*/}
+          {/*    startDate={startDate}*/}
+          {/*    endDate={endDate}*/}
+          {/*    onCreate={createReserv}*/}
+          {/*    onChange={onReservationChange}*/}
+          {/*    onReservationChange = {onReservationDateChange}*/}
+          {/*/>*/}
+          {/*<DynamicArrayReservation reservations={reservations} onRemove={onRemoveReservation}/>*/}
           {/*<Hitting/>*/}
           {/*<Todo isAdmin="Y"/>*/}
           {/*<Todo isAdmin="N"/>*/}
@@ -195,16 +195,16 @@ function App() {
           {/*<UseRef/>*/}
 
           {/*<DynamicArray/>*/}
-          {/*<CreateUser*/}
-          {/*    username={username}*/}
-          {/*    email={email}*/}
-          {/*    onChange={onChange}*/}
-          {/*    onCreate={onCreate}*/}
-          {/*    onkeyup = {enter}*/}
-          {/*/>*/}
-          {/*<DynamicArrayVersion2 users = {users} onRemove = {onRemove} onToggle = {onToggle}/>*/}
-          {/*<div>활성사용자 수 : {count}</div>*/}
-          {/*<div>이메일 안적은 사람 수 : {nullEmailUser}</div>*/}
+          <CreateUser
+              username={username}
+              email={email}
+              onChange={onChange}
+              onCreate={onCreate}
+              onkeyup = {enter}
+          />
+          <DynamicArrayVersion2 users = {users} onRemove = {onRemove} onToggle = {onToggle}/>
+          <div>활성사용자 수 : {count}</div>
+          <div>이메일 안적은 사람 수 : {nullEmailUser}</div>
       </Wrapper>
   );
 }
