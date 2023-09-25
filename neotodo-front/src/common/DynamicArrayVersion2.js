@@ -1,6 +1,4 @@
-import React, {useEffect} from "react";
-
-
+import React, {useEffect, useReducer} from "react";
 
 function DynamicVersion2({user, onRemove, onToggle}) {
     const style = {display: "flex"};

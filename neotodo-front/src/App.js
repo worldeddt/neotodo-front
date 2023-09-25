@@ -6,7 +6,7 @@ import Input from "./common/Input";
 import UseRef from "./common/UseRef";
 import DynamicArray from "./common/DynamicArray";
 import DynamicArrayVersion2 from "./common/DynamicArrayVersion2";
-import {useEffect, useMemo, useRef, useState, useCallback} from "react";
+import {useEffect, useMemo, useRef, useState, useCallback, useReducer} from "react";
 import CreateUser from "./common/CreateUser";
 import CreateReservation from "./common/CreateReservation";
 import DynamicArrayReservation from "./common/DynamicArrayReservation";
@@ -17,6 +17,11 @@ function countActiveUsers(users) {
 
 function confirmNullOfEmailUser(users) {
     return users.filter(user => user.email === null || user.email === "" || user.email === undefined).length;
+}
+
+function toggle(active, action) {
+    active = !action;
+    return active;
 }
 
 function App() {
@@ -165,10 +170,23 @@ function App() {
         setReservations(reservations.filter(reservation => reservation.reservationNumber !== reservationNumber));
     }
 
+    const [active, dispatch] = useReducer(toggle, true);
+
     const onToggle = id => {
         setUsers(
-            users.map(user =>
-                user.id === id ? { ...user, active: !user.active } : user
+            users.map(user => {
+                    if (user.id === id) {
+                        dispatch(user.active);
+                        console.log(user);
+                        console.log(active);
+                        return {
+                            ...user,
+                            active : active
+                        }
+
+
+                    } else return user;
+                }
             )
         );
     }
