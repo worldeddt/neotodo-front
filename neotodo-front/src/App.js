@@ -10,7 +10,6 @@ import {useEffect, useMemo, useRef, useState} from "react";
 import CreateUser from "./common/CreateUser";
 
 function countActiveUsers(users) {
-    console.log("사람 수 카운트 호출");
     return users.filter(user => user.active).length;
 }
 
@@ -29,10 +28,6 @@ function App() {
             onCreate();
         }
     }
-
-    useEffect((enter) => {
-
-    }, []);
 
     const { username, email } = inputs;
 
@@ -56,6 +51,13 @@ function App() {
             active :true
         }
     ]);
+
+    useEffect((enter) => {
+        return () => {
+            console.log(...users);
+        }
+
+    }, [users]);
 
     const onChange = e => {
         const { name, value } = e.target;
