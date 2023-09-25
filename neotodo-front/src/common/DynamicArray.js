@@ -31,7 +31,8 @@ function DynamicArray() {
     ];
 
     return (
-        <div> // 동적인 배열을 렌더링해야 할 때에는 자바스크립트 배열의 내장함수 map() 을 사용
+        // 동적인 배열을 렌더링해야 할 때에는 자바스크립트 배열의 내장함수 map() 을 사용
+        <div>
             {users.map(user => <Dynamic user={user} key={user.id}/>)
             }
         </div>
