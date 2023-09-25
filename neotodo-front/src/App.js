@@ -90,13 +90,13 @@ function App() {
 
     }, [users]);
 
-    const onChange = useCallback(e => {
+    const onChange = e => {
         const { name, value } = e.target;
         setInputs({
             ...inputs,
             [name]: value
         });
-    });
+    };
 
     const onReservationChange = e => {
         const {name, value} = e.target;
@@ -139,7 +139,7 @@ function App() {
         reservationId.current += 1;
     }
 
-    const onCreate = useCallback(() => {
+    const onCreate = () => {
         const user = {
             id: nextId.current,
             username,
@@ -155,23 +155,23 @@ function App() {
         });
 
         nextId.current += 1;
-    }, [users, username, email]);
+    };
 
-    const onRemove = useCallback(id => {
+    const onRemove = id => {
         setUsers(users.filter(user => user.id !== id));
-    }, [users]);
+    };
 
     const onRemoveReservation = (reservationNumber) => {
         setReservations(reservations.filter(reservation => reservation.reservationNumber !== reservationNumber));
     }
 
-    const onToggle = useCallback(id => {
+    const onToggle = id => {
         setUsers(
             users.map(user =>
                 user.id === id ? { ...user, active: !user.active } : user
             )
         );
-    }, [users]);
+    }
 
     // const count = countActiveUsers(users);
     const count = useMemo(() => countActiveUsers(users), [users]);
@@ -205,6 +205,8 @@ function App() {
           <DynamicArrayVersion2 users = {users} onRemove = {onRemove} onToggle = {onToggle}/>
           <div>활성사용자 수 : {count}</div>
           <div>이메일 안적은 사람 수 : {nullEmailUser}</div>
+
+          <Hitting></Hitting>
       </Wrapper>
   );
 }

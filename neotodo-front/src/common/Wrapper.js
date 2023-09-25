@@ -12,4 +12,4 @@ function Wrapper({children}) {
     </div>
 }
 
-export default Wrapper;
+export default React.memo(Wrapper);

@@ -27,4 +27,4 @@ function CreateUser({
     </div>
 }
 
-export default CreateUser;
+export default React.memo(CreateUser);
