@@ -9,21 +9,27 @@ function CreateUser({
                         onkeyup
 }) {
 
+    const enterEvent = e => {
+        if (e.keyCode === 13) onCreate();
+    }
+
     return <div>
         <input
             name="username"
             placeholder="계정명"
             onChange={onChange}
             value={username}
+            onKeyUp={enterEvent}
+
         />
         <input
             name="email"
             placeholder="이메일"
             onChange={onChange}
             value={email}
-            onKeyUp={onkeyup}
+            onKeyUp={enterEvent}
         />
-        <button onClick={onCreate}>등록</button>
+        <button  onClick={onCreate}>등록</button>
     </div>
 }
 
