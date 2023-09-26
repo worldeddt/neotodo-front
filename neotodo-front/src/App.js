@@ -2,6 +2,7 @@ import React, {useRef, useReducer, useCallback, useMemo} from 'react';
 import CreateUser from "./common/CreateUser";
 import DynamicArrayVersion2 from "./common/DynamicArrayVersion2";
 import useInputs from "./hooks/useInputs";
+import {produce} from "immer";
 
 function countActiveUsers(users) {
     console.log('활성 사용자 수를 세는중...');
@@ -34,12 +35,10 @@ const initialState = {
 function reducer(state, action) {
     switch (action.type) {
         case 'TOGGLE_USER':
-            return {
-                ...state,
-                users: state.users.map(user =>
-                    user.id === action.id ? { ...user, active: !user.active } : user
-                )
-            };
+            return produce(state, draft => {
+                const findUser = draft.users.find(user => user.id === action.id);
+                findUser.active = !findUser.active;
+            });
         case 'CHANGE_INPUT':
             return {
                 ...state,
@@ -49,21 +48,14 @@ function reducer(state, action) {
                 }
             };
         case 'CREATE_USER':
-            return {
-                inputs: initialState.inputs,
-                users: state.users.concat(action.user)
-            };
+            return produce(state, draft => {
+                draft.users.push(action.user);
+            });
         case 'REMOVE_USER':
-            console.log(action);
-            state.users.filter(user =>
-                user.id === action.id ? { ...user, active: !user.active } : user
-            )
-
-            // return {
-            //
-            //
-            //     // users: state.users.filter(user => user.id !== action.id)
-            // };
+            return produce(state, draft => {
+                const index = draft.users.findIndex(user => user.id === action.id);
+                draft.users.splice(index, 1);
+            });
         default:
             return state;
     }
