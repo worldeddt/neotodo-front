@@ -54,7 +54,8 @@ function reducer(state, action) {
                 users: state.users.concat(action.user)
             };
         case 'REMOVE_USER':
-            state.users.map(user =>
+            console.log(action);
+            state.users.filter(user =>
                 user.id === action.id ? { ...user, active: !user.active } : user
             )
 
@@ -68,8 +69,10 @@ function reducer(state, action) {
     }
 }
 
+export const UserDispatch = React.createContext(null);
+
 function App() {
-    const [{ username, email }, onChange, reset] = useInputs({
+    const [{ username, email }, onChange, onReset] = useInputs({
         username: '',
         email: ''
     });
@@ -78,13 +81,6 @@ function App() {
     const nextId = useRef(4);
 
     const { users } = state;
-
-    const onToggle = useCallback(id => {
-        dispatch({
-            type: 'TOGGLE_USER',
-            id
-        });
-    }, []);
 
     const onCreate = useCallback(() => {
         if (!username || !email) return;
@@ -98,29 +94,22 @@ function App() {
             }
         });
         nextId.current += 1;
-        reset();
-    }, [username, email, reset]);
-
-    const onRemove = useCallback(id => {
-        dispatch({
-            type: 'REMOVE_USER',
-            id
-        });
-    }, []);
+        onReset();
+    }, [username, email, onReset]);
 
     const userCount = useMemo(() => countActiveUsers(state.users), [state.users])
 
     return (
-        <>
+        <UserDispatch.Provider value={dispatch}>
             <CreateUser
                 username={username}
                 email={email}
                 onChange={onChange}
                 onCreate={onCreate}
             />
-            <DynamicArrayVersion2 onToggle={onToggle} onRemove={onRemove} users={users} />
+            <DynamicArrayVersion2 users={users} />
             <div>활성사용자 수 : {userCount}</div>
-        </>
+        </UserDispatch.Provider>
     );
 }
 
