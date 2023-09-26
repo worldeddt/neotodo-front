@@ -37,4 +37,4 @@ function DynamicArrayVersion2({users, onRemove, onToggle}) {
 }
 
 
-export default DynamicArrayVersion2;
+export default React.memo(DynamicArrayVersion2);
