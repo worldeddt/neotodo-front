@@ -41,15 +41,28 @@ function todoReducer(state, action) {
 const TodoStateContext = createContext();
 const TodoDispatchContext = createContext();
 const TodoNextIdContext = createContext();
-const TodoTest = createContext();
+const TodoProfileContext = createContext();
+
+function profileReducer(state, action) {
+    switch (action.profile) {
+        case 'dev' :
+            console.log("dev");
+            break;
+        case 'prod' :
+            console.log("prod");
+            break;
+        default:
+            throw new Error("profile error"+action);
+    }
+}
 
 export function TodoProvider({ children }) {
     const [state, dispatch] = useReducer(todoReducer, initialTodos);
     const nextId = useRef(5);
-    const profile = "dev";
+    const [profile, profileDispatch] = useReducer(profileReducer, "dev");
 
     return (
-        <TodoTest.Provider value={profile}>
+        <TodoProfileContext.Provider value={profile}>
         <TodoStateContext.Provider value={state}>
             <TodoDispatchContext.Provider value={dispatch}>
                 <TodoNextIdContext.Provider value={nextId}>
@@ -57,17 +70,17 @@ export function TodoProvider({ children }) {
                 </TodoNextIdContext.Provider>
             </TodoDispatchContext.Provider>
         </TodoStateContext.Provider>
-        </TodoTest.Provider>
+        </TodoProfileContext.Provider>
     );
 }
 
-export function getTodoTest() {
- const test = useContext(TodoTest);
- if (!test) {
-     throw new Error('Cannot find TodoProvider');
- }
+export function useTodoProfile() {
+     const test = useContext(TodoProfileContext);
+     if (!test) {
+         throw new Error('Cannot find TodoProvider');
+     }
 
- return test;
+     return test;
 }
 
 export function useTodoState() {
